@@ -15,3 +15,6 @@ docker cp ipxe-iso:/build/ipxe.iso .
 # stop and remove the container
 docker stop ipxe-iso
 docker rm ipxe-iso
+
+shasum ipxe.iso > ipxe.iso.sha1
+shasum -a 256 ipxe.iso > ipxe.iso.sha256
