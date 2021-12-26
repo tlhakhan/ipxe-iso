@@ -18,7 +18,12 @@ RUN apt-get update && \
 RUN git clone -b ${IPXE_VERSION} https://github.com/ipxe/ipxe
 
 # src overrides 
-COPY src/config/general.h /build/ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define\tIMAGE_COMBOOT/#define\tIMAGE_COMBOOT/' /build/ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define NSLOOKUP_CMD/#define\tNSLOOKUP_CMD/' /build/ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define VLAN_CMD/#define\tVLAN_CMD/' /build/ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define REBOOT_CMD/#define\tREBOOT_CMD/' /build/ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define POWEROFF_CMD/#define\tPOWEROFF_CMD/' /build/ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define PING_CMD/#define\tPING_CMD/' /build/ipxe/src/config/general.h
 
 # make
 RUN cd ipxe/src && \
