@@ -2,7 +2,7 @@
 This repo helps build a simple iPXE CD to drop into the iPXE shell on boot. 
 
 ## Releases
-- Get a copy of the ISO file from the releases section <https://github.com/tlhakhan/ipxe-iso/releases>.
+Get a copy of the ISO file from the releases section <https://github.com/tlhakhan/ipxe-iso/releases>.
 
 ## File list
 file | description
