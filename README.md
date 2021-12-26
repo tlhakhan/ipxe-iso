@@ -1,5 +1,5 @@
 # README
-This repo helps build a simple iPXE CD to drop into the iPXE shell on boot. 
+This repo helps build a simple iPXE CD to drop into the iPXE shell on boot.  The iPXE shell will not invoke any DHCP requests unless by the `dhcp` command.  This iPXE shell is a perfect landing area for Packer to type boot commands, which can invoke DHCP and chain an templated iPXE script from a webserver.
 
 ## Releases
 Get a copy of the ISO file from the releases section <https://github.com/tlhakhan/ipxe-iso/releases>.
