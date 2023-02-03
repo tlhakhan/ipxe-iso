@@ -13,14 +13,19 @@ RUN apt-get update && \
 # clone the ipxe repo
 RUN git clone -b ${IPXE_VERSION} https://github.com/ipxe/ipxe
 
+# Allow download by HTTPS
+# https://ipxe.org/buildcfg/download_proto_https
+RUN sed -ie 's/#undef	DOWNLOAD_PROTO_HTTPS/#define DOWNLOAD_PROTO_HTTPS/' ipxe/src/config/general.h
+
 # IMAGE_COMBOOT is needed to iPXE ESXi kernel boot
-RUN sed -ie 's/\/\/#define\tIMAGE_COMBOOT/#define\tIMAGE_COMBOOT/' ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define IMAGE_COMBOOT/#define IMAGE_COMBOOT/' ipxe/src/config/general.h
+
 # iPXE commands to have in the iPXE shell for debugging
-RUN sed -ie 's/\/\/#define NSLOOKUP_CMD/#define\tNSLOOKUP_CMD/' ipxe/src/config/general.h
-RUN sed -ie 's/\/\/#define VLAN_CMD/#define\tVLAN_CMD/' ipxe/src/config/general.h
-RUN sed -ie 's/\/\/#define REBOOT_CMD/#define\tREBOOT_CMD/' ipxe/src/config/general.h
-RUN sed -ie 's/\/\/#define POWEROFF_CMD/#define\tPOWEROFF_CMD/' ipxe/src/config/general.h
-RUN sed -ie 's/\/\/#define PING_CMD/#define\tPING_CMD/' ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define NSLOOKUP_CMD/#define NSLOOKUP_CMD/' ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define VLAN_CMD/#define VLAN_CMD/' ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define REBOOT_CMD/#define REBOOT_CMD/' ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define POWEROFF_CMD/#define POWEROFF_CMD/' ipxe/src/config/general.h
+RUN sed -ie 's/\/\/#define PING_CMD/#define PING_CMD/' ipxe/src/config/general.h
 
 RUN <<EOF cat > run.ipxe
 #!ipxe
@@ -32,6 +37,7 @@ RUN cd ipxe/src && \
 
 FROM busybox:latest
 WORKDIR /dist
+COPY --from=0 /build/ipxe/src/config/general.h /dist/general.h
 COPY --from=0 /build/run.ipxe /dist/run.ipxe
 COPY --from=0 /build/ipxe/src/bin/ipxe.usb /dist/ipxe.usb
 COPY --from=0 /build/ipxe/src/bin/ipxe.iso /dist/ipxe.iso
