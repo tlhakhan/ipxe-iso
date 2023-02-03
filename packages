@@ -1,5 +1,0 @@
-build-essential
-mkisofs
-liblzma-dev
-isolinux
-git

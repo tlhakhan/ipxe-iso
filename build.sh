@@ -1,28 +1,31 @@
 #!/bin/bash
 set -e
 
-readlink -f . | xargs -n1 basename | figlet
-sleep 1
-
 # build the image
 docker build . \
-  -t ipxe-iso:latest \
+  -t ipxe-build:latest \
 
 # run the container
-docker run -it -d  --name ipxe-iso ipxe-iso:latest
+docker run -it -d  --name ipxe-build ipxe-build:latest
 
 set -x
 # make a dist folder
 test -d dist || mkdir dist
+
 # copy out the ipxe.iso file
-docker cp ipxe-iso:/build/ipxe.iso dist/
+docker cp ipxe-build:/dist/ipxe.iso dist/
+docker cp ipxe-build:/dist/ipxe.usb dist/
+
 # stop and remove the container
-docker stop ipxe-iso
-docker rm ipxe-iso
+docker kill ipxe-build
+docker rm ipxe-build
 
 # checksums
 shasum dist/ipxe.iso > dist/ipxe.iso.sha1
 shasum -a 256 dist/ipxe.iso > dist/ipxe.iso.sha256
+
+shasum dist/ipxe.usb > dist/ipxe.usb.sha1
+shasum -a 256 dist/ipxe.usb > dist/ipxe.usb.sha256
 
 # display
 tree dist
