@@ -33,11 +33,9 @@ shell
 EOF
 
 RUN cd ipxe/src && \
-    make all EMBED=/build/run.ipxe
+    make EMBED=/build/run.ipxe CROSS_COMPILE=aarch64-linux-gnu- ARCH=arm64 bin-arm64-efi/snp.efi bin/ipxe.iso bin/ipxe.usb
 
-FROM busybox:latest
+FROM scratch
 WORKDIR /dist
-COPY --from=0 /build/ipxe/src/config/general.h /dist/general.h
-COPY --from=0 /build/run.ipxe /dist/run.ipxe
 COPY --from=0 /build/ipxe/src/bin/ipxe.usb /dist/ipxe.usb
 COPY --from=0 /build/ipxe/src/bin/ipxe.iso /dist/ipxe.iso
