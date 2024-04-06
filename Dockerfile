@@ -8,7 +8,7 @@ WORKDIR /build
 
 # install build tools
 RUN apt-get update && \
-    apt-get install -y build-essential git isolinux liblzma-dev mkisofs
+    apt-get install -y build-essential git isolinux liblzma-dev mkisofs gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
 # clone the ipxe repo
 RUN git clone -b ${IPXE_VERSION} https://github.com/ipxe/ipxe
